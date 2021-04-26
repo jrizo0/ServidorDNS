@@ -1,0 +1,15 @@
+$ORIGIN google.com
+google.com IN SOA www.google.com
+hosts
+www IN A 192.168.254.3
+www IN A 192.168.254.6
+
+$ORIGIN drive.com
+drive.com IN SOA www.drive.com
+hosts
+www IN A 192.168.254.4
+
+$ORIGIN youtube.com
+youtube.com IN SOA www.youtube.com
+hosts
+www IN A 192.168.254.5
