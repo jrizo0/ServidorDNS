@@ -24,22 +24,12 @@ public class ServidorDNS {
     ////////////////////////////////////////////////////////////
     private static final int PUERTO = 53;
     private DatagramSocket socket;
-    private ControladorMasterFile masterFile;
     private int aa;
 
     ////////////////////////////////////////////////////////////
     //Constructor///////////////////////////////////////////////
     ////////////////////////////////////////////////////////////
     public ServidorDNS() {
-        try {
-            System.out.println("Leyendo archivo");
-            masterFile = new ControladorMasterFile();
-            masterFile.mostrarDominios();
-        } catch (IOException event) {
-            System.out.println("Error: [" + event.getMessage() + "]");
-            System.exit(1);
-        }
-
         byte[] mensajeRecibido = new byte[1024];
         try {
             socket = new DatagramSocket(PUERTO);
@@ -48,9 +38,9 @@ public class ServidorDNS {
             while (true) {
                 DatagramPacket solicitud = new DatagramPacket(mensajeRecibido, 1024);
                 socket.receive(solicitud);
-                System.out.print("Mensaje recibido desde: ");
-                System.out.print(solicitud.getAddress().getHostAddress() + ": " + solicitud.getPort());
-                System.out.println("\nTamaño del mensaje: " + solicitud.getLength());
+                System.out.println("Mensaje recibido desde: ");
+                System.out.println(solicitud.getAddress().getHostAddress() + ": " + solicitud.getPort());
+                System.out.println("Tamaño del mensaje: " + solicitud.getLength());
 
                 Consulta consulta = new Consulta(solicitud.getData());
                 System.out.println("id consulta: " + consulta.getId());
@@ -59,13 +49,14 @@ public class ServidorDNS {
                 //IMPRIMIR DIRECCIÓN
                 //SI LA RESPUESTA VIENE DEL MASTERFILE ES AUTORITATIVA 
                 InetAddress ipSolucion = busquedaMasterFile(consulta.getNombreHost(), solicitud);
-                Respuesta respuesta = new Respuesta(consulta.getId(), this.aa, consulta.getNombreHost(), consulta.getTipo(), consulta.getClase(), ipSolucion);
-
                 DatagramPacket paqueteRespuesta;
-                paqueteRespuesta = new DatagramPacket(respuesta.getDatos(), respuesta.getLongitud(), solicitud.getAddress(), solicitud.getPort());
-//                paqueteRespuesta = new DatagramPacket(new byte[0], 0, solicitud.getAddress(), solicitud.getPort());
-                socket.send(paqueteRespuesta);
-                System.out.println("Mandando paquete....");
+                if (!(null == ipSolucion)) {
+                    Respuesta respuesta = new Respuesta(consulta.getId(), this.aa, consulta.getNombreHost(), consulta.getTipo(), consulta.getClase(), ipSolucion);
+                    paqueteRespuesta = new DatagramPacket(respuesta.getDatos(), respuesta.getLongitud(), solicitud.getAddress(), solicitud.getPort());
+                    socket.send(paqueteRespuesta);
+                    System.out.println("¡¡¡¡Mandando paquete!!!!\n");
+                }
+                else paqueteRespuesta = new DatagramPacket(new byte[0], 0, solicitud.getAddress(), solicitud.getPort());
             }
         } catch (SocketException ex) {
             Logger.getLogger(ServidorDNS.class.getName()).log(Level.SEVERE, null, ex);
@@ -110,11 +101,11 @@ public class ServidorDNS {
                     i++;
                     if (separador[i].equals(buscaAux)) {
                         verdadero = true;
-                        System.out.print("Mensaje recibido desde: ");
-                        System.out.print(solicitud.getAddress().getHostAddress() + ": " + solicitud.getPort());
-                        System.out.println("\nTamaÃ±o del mensaje: " + solicitud.getLength());
+                        System.out.println("Mensaje recibido desde: ");
+                        System.out.println(solicitud.getAddress().getHostAddress() + ": " + solicitud.getPort());
+                        System.out.println(" / TamaÃ±o del mensaje: " + solicitud.getLength());
                         System.out.println("Respuesta autoritativa para " + separador[i] + " : " + separador[i + 9]);
-                     
+
                         String ipd = separador[i + 9];
                         String ip[] = ipd.split("\\.");
                         int ip1 = Integer.parseInt(ip[0]);
@@ -147,10 +138,11 @@ public class ServidorDNS {
         try {
             direccion = InetAddress.getByName(nombreHost);
             sentencia = nombreHost + " : " + direccion.getHostAddress();
-            masterFile.adicionarHost(nombreHost, direccion);
+
         } catch (UnknownHostException event) { // No se encontro
-            sentencia = "Nombre de host: [" + nombreHost + "] no se encuentra";
+            sentencia = "Nombre de host: [" + nombreHost + "] no se encuentra\n";
         }
+        System.out.println(sentencia);
         return direccion;
     }
 
