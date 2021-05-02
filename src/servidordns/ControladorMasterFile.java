@@ -101,7 +101,7 @@ public class ControladorMasterFile {
     public boolean existeNombreHost(String nombreHost) {
         return dominios.stream().anyMatch((a) -> (a.getNombreHost().equals(nombreHost)));
     }
-    
+    //tas buscar con w y sin w
     public InetAddress obtenerDireccion(String nombreHost) {
         for (Dominio a : dominios) {
             if (a.getNombreHost().equals(nombreHost)) {

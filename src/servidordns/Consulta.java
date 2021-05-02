@@ -30,7 +30,9 @@ public class Consulta {
         this.banderas = get2bytes(); //apuntador = 4byte
         this.preguntas = get2bytes(); //apuntador = 6byte
 //se necesitan los otros campos?????
-
+//        respuesta_RR = dar2Bytes();
+//        autenticacion_RR = dar2Bytes();
+//        anadir_RR = dar2Bytes();
         apuntador += 6; //apuntador = 12byte(query)
         int longitudNombre = getByteActual();
        

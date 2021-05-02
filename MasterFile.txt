@@ -1,15 +1,19 @@
-$ORIGIN google.com
-google.com IN SOA www.google.com
-hosts
-www IN A 192.168.254.3
-www IN A 192.168.254.6
+ $ORIGIN google.com
+ google.com IN SOA www.google.com
+ hosts
+ www IN A 142.250.78.78
 
-$ORIGIN drive.com
-drive.com IN SOA www.drive.com
-hosts
-www IN A 192.168.254.4
+ $ORIGIN drive.com
+ drive.com IN SOA www.drive.com
+ hosts
+ www IN A 205.178.189.131
 
-$ORIGIN youtube.com
-youtube.com IN SOA www.youtube.com
-hosts
-www IN A 192.168.254.5
+ $ORIGIN youtube.com
+ youtube.com IN SOA www.youtube.com
+ hosts
+ www IN A 172.217.30.206
+
+ $ORIGIN javeriana.edu.co
+ javeriana.edu.co IN SOA www.javeriana.edu.co
+ hosts
+ www IN A 200.3.149.136
