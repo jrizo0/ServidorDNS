@@ -38,7 +38,7 @@ public class Respuesta {
         datos.add(bait);
     }
     
-    public void agregarBytes(byte[] bytes) {
+    public void agregarBytes(byte[] bytes){
         int i = 0;
         while(i < bytes.length){
             agregarByte(bytes[i]);

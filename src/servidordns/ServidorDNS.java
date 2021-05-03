@@ -1,6 +1,4 @@
-/*
- ESTE ES PAPI
- */
+//VERSION FINAL
 package servidordns;
 
 import java.io.IOException;
